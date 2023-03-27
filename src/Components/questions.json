@@ -1,0 +1,61 @@
+[
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "difficulty": "hard",
+        "question": "What was the name of the hero in the 80s animated video game 'Dragon's Lair'?",
+        "correct_answer": "Dirk the Daring",
+        "incorrect_answers": [
+            "Arthur",
+            "Sir Toby Belch",
+            "Guy of Gisbourne"
+        ]
+    },
+    {
+        "category": "Animals",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What is the scientific name for modern day humans?",
+        "correct_answer": "Homo Sapiens",
+        "incorrect_answers": [
+            "Homjo Ergaster",
+            "Homo Erectus",
+            "Homo Neanderthalensis"
+        ]
+    },
+    {
+        "category": "Entertainment: Books",
+        "type": "multiple",
+        "difficulty": "hard",
+        "question": "What is Ron Weasley's middle name?",
+        "correct_answer": "Bilius",
+        "incorrect_answers": [
+            "Arthur",
+            "John",
+            "Dominic"
+        ]
+    },
+    {
+        "category": "Entertainment: Comics",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "Who is the creator of the comic series The Walking Dead?",
+        "correct_answer": "Robert Kirkman",
+        "incorrect_answers": [
+            "Stan Lee",
+            "Malcolm Wheeler-Nicholson",
+            "Robert Crumb"
+        ]
+    },
+    {
+        "category": "Entertainment: Board Games",
+        "type": "multiple",
+        "difficulty": "medium",
+        "question": "At the start of a standard game of the Monopoly, if you throw a double six, which square would you land on?",
+        "correct_answer": "Electric Company",
+        "incorrect_answers": [
+            "Water Works",
+            "Chance",
+            "Community Chest"
+        ]
+    }]
