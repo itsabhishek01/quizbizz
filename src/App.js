@@ -1,5 +1,6 @@
 import './App.css';
 import Quiz from './Components/Quiz'
+import Score from './Components/Score';
 import { BrowserRouter, Routes } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ function App() {
 <BrowserRouter>
     <Routes>
       <Route path='/' element={<Quiz/>}/>
+      <Route path='/Score' element={<Score/>}/>
     </Routes>
 </BrowserRouter>
   );
