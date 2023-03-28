@@ -1,9 +1,25 @@
-import React, { useState,useEffect } from "react";
+//Importing libraries
+import React, { useState, useEffect } from "react";
 import data from "./questions.json";
 import Button from "react-bootstrap/Button";
-import './Quiz.css'
+import MultiProgress from "react-multi-progress";
+import "./Quiz.css";
+import { useNavigate } from "react-router-dom";
 
 function Quiz() {
+  //UseEffect Hook to clear the result data from local storage on page load
+
+  //Today's Status:
+  // Title : Quiz App
+  // DONE:
+  // Optimizing the Code - 2 and half Hrs
+
+  useEffect(() => {
+    localStorage.removeItem("result");
+  }, []);
+
+  //Navigate hook , to navigate the user to the result page
+  const navigate = useNavigate();
 
   //Function to return options Array
   function returnOptions(correctAnswer, incorrectAnswers) {
@@ -11,16 +27,18 @@ function Quiz() {
     for (let values of incorrectAnswers) {
       finalOptions.push(values);
     }
-    return shuffle(finalOptions);
+    return shuffleOptionsArray(finalOptions);
   }
 
   //function to shuffle array of answers
-  function shuffle(array) {
+  function shuffleOptionsArray(array) {
     let currentIndex = array.length,
       randomIndex;
     while (currentIndex !== 0) {
+      //assigning a random value to the randomIndex
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
+      //Swapping the index of the current index and random index
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex],
         array[currentIndex],
@@ -29,135 +47,171 @@ function Quiz() {
     return array;
   }
 
-  //Function to return Stars
-  const returnStars = (difficulty) => {
-    if (difficulty === "easy") {
-      return "★☆☆☆☆";
-    } else if (difficulty === "medium") {
-      return "★★★☆☆";
-    } else {
-      return "★★★★★";
-    }
-  };
-
-  //Setting initital data
+  //Setting initital data , of options that will will shown to user for the first question
   let initialOptions = [data[0].correct_answer];
   for (const values of data[0].incorrect_answers) {
     initialOptions.push(values);
   }
 
-  //States
-  const [questionNumber, setQuestionNumber] = useState(1);
-  const [questionCategory, setQuestionCategory] = useState(data[0].category);
-  const [difficulty, setDifficulty] = useState(returnStars(data[0].difficulty));
-  const [currentQuestion, setCurrentQuestion] = useState(data[0].question);
-  const [answers, setAnswers] = useState(shuffle(initialOptions));
-  const [show, setShow] = useState("");
-  const [score, setScore] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [selectedButton, setSelectedButton] = useState();
-  const [rightAnswer,setRightAnswer] = useState();
-
-  //Function to change Next Question
-  const handleNextQuestionChange = () => {
-    setQuestionNumber(questionNumber + 1);
-    let length = data.length;
-    if (questionNumber < length) {
-      setQuestionCategory(data[questionNumber].category);
-      setDifficulty(returnStars(data[questionNumber].difficulty));
-      setCurrentQuestion(data[questionNumber].question);
-      setAnswers(
-        returnOptions(
-          data[questionNumber].correct_answer,
-          data[questionNumber].incorrect_answers
-        )
-      );
-      setShow("");
+  //Function to return Stars
+  const returnStarsForDifficulty = (difficulty) => {
+    if (difficulty === "easy") {
+      //if the difficulty is easy , it will return the following number of stars
+      return "★☆☆☆☆";
+    } else if (difficulty === "medium") {
+      //if the difficulty is medium , it will return the following number of stars
+      return "★★★☆☆";
     } else {
-      setQuestionNumber(data.length);
+      //if the difficulty is other than easy and medium , it will return the following number of stars
+      return "★★★★★";
     }
   };
 
+  //States used in the Component
+
+  //This State will store Current Question Number
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+  //This State will store Current Question Category
+  const [currentQuestionCategory, setCurrentQuestionCategory] = useState(data[0].category);
+  //This State will store Current Question Difficulty
+  const [currentQuestiondifficulty, setCurrentQuestionDifficulty] = useState(returnStarsForDifficulty(data[0].difficulty));
+  //This State Will store Current Question
+  const [currentQuestion, setCurrentQuestion] = useState(data[0].question);
+  //This State will store Quiz Options 
+  const [quizOptions, setQuizOptions] = useState(shuffleOptionsArray(initialOptions));
+  //This State will store Correct and Incorrect Validtion
+  const [showCorrectIncorrectValidation, setshowCorrectIncorrectValidation] = useState("");
+  //This State will Store the Current Quiz Score 
+  const [quizScore, setQuizScore] = useState(0);
+  //This State will store the Current Quiz Progress
+  const [quizProgress, setQuizProgress] = useState(0);
+  //This State will store the index of the Option Selected by the user from the list of options for the question 
+  const [selectedOption, setSelectedOption] = useState();
+  //This State will Store the Max Score for the Current Quiz 
+  const [quizMaxScore, setQuizMaxScore] = useState(100);
+  // This State will Store the value of incorrect progress Bar , if there is a wrong answer
+  const [incorrectProgressBar, setIncorrectProgressBar] = useState(data.length)
+  //This State will store all the data , that is required to show result to user , when navigate to Resullt page
+  const [quizResult, setQuizResult] = useState({
+    finalScore: "",
+    finalPercentage: "",
+    dataLength: "",
+  });
+
+  //useeffect hook to set result on each show render
+  useEffect(() => {
+    setQuizResult({
+      finalScore: quizScore,
+      dataLength: data.length,
+    });
+  }, [showCorrectIncorrectValidation]);
+
+  //Function to change Next Question , on the click of next Question Button
+  function handleNextQuestionChange() {
+    setCurrentQuestionNumber(currentQuestionNumber + 1);
+    let length = data.length;
+    // the next question will only be shown , if the current question number is less than the total number of questions
+    if (currentQuestionNumber < length) {
+      setCurrentQuestionCategory(data[currentQuestionNumber].category);
+      setCurrentQuestionDifficulty(returnStarsForDifficulty(data[currentQuestionNumber].difficulty));
+      setCurrentQuestion(data[currentQuestionNumber].question);
+      setQuizOptions(
+        returnOptions(
+          data[currentQuestionNumber].correct_answer,
+          data[currentQuestionNumber].incorrect_answers
+        )
+      );
+      setshowCorrectIncorrectValidation("");
+    } else {
+      setCurrentQuestionNumber(data.length);
+    }
+  }
+
   //Fumction to Show Right Answer
   const handleCorrectAnswer = (value, index) => {
-    setSelectedButton(index);
-    if (value === data[questionNumber - 1].correct_answer) {
-      setShow("Correct Answer");
-      setScore(score + 5);
-      setProgress(progress + 1);
-      setRightAnswer(index);
+    setSelectedOption(index);
+    if (value === data[currentQuestionNumber - 1].correct_answer) {
+      setshowCorrectIncorrectValidation("Correct Answer");
+      setQuizScore(quizScore + 100 / data.length);
+      setQuizProgress(quizProgress + 1);
     } else {
-      setShow("Incorrect Answer !!!");
+      setshowCorrectIncorrectValidation("Incorrect Answer !!!");
+      if (quizScore > 0) {
+        setQuizMaxScore(quizMaxScore - 100 / data.length);
+        setIncorrectProgressBar(incorrectProgressBar - data.length)
+      }
+      setQuizMaxScore(quizMaxScore - 100 / data.length);
+      setIncorrectProgressBar(incorrectProgressBar - data.length)
     }
   };
 
   //Show Result
-
   const handleShowResult = () => {
-    setQuestionNumber(1);
-    setQuestionCategory(data[0].category);
-    setDifficulty(returnStars(data[0].difficulty));
-    setCurrentQuestion(data[0].question);
-    setAnswers(shuffle(initialOptions));
-    setShow("");
-    setScore(0);
-    setProgress(0);
+    localStorage.setItem("result", JSON.stringify(quizResult));
+    navigate("/Score");
   };
 
-  const percentage = progress * (100 / data.length);
-
   return (
+    // decodeURIComponent , Method is used to decrypt the URL encoding
     <>
+      {/* Div to Display the entire Quiz Window */}
       <div className="Quiz-Window">
-        <progress max={data.length} value={questionNumber}>Hello</progress>
+        {/* Top Progress Bar , which will increase after each question number change */}
+        <progress max={data.length} value={currentQuestionNumber}></progress>
+        {/* Div to display the main part of quiz window */}
         <div className="questions">
           <div className="QuestionHeader">
+            {/* Current Question Number */}
             <h4 style={{ fontSize: "35px" }}>
-              Question {questionNumber} of {data.length}
-            </h4>
+              Question {currentQuestionNumber} of {data.length}
+            </h4>'
+            {/* Current Question Category */}
             <p style={{ fontSize: "18px", color: "brown", marginBottom: "0" }}>
-              {questionCategory}
+              {decodeURIComponent(currentQuestionCategory)}
             </p>
+            {/* Current question Difficulty */}
             <p style={{ fontSize: "14px", color: "grey", marginBottom: "0" }}>
-              Difficulty: {difficulty}
-            </p>
-            <p style={{ fontSize: "18px", color: "blue", marginBottom: "25" }}>
-              Current Score : <b>{score}</b>
+              Difficulty: {currentQuestiondifficulty}
             </p>
           </div>
           <div>
+            {/* Div to display the current question */}
             <div className="question">
               <h5>
-                <b>{currentQuestion}</b>
+                <b>{decodeURIComponent(currentQuestion)}</b>
               </h5>
             </div>
+            {/* Div to display all the options buttons, which will be mapped from array named answers */}
             <div className="options">
-              {answers.map((values, index) => {
+              {quizOptions.map((values, index) => {
                 return (
-                  <div key={index} style={{ display: "inline-block" }} className=" pt-3">
-                    {show === "" ? (
+                  <div
+                    key={index}
+                    style={{ display: "inline-block" }}
+                    className=" pt-3"
+                  >
+                    {/* if if showCorrectIncorrect === '' , it will display the buttons which will have the onClick functionality */}
+                    {/* if if showCorrectIncorrect !== '' , it will display the buttons which will not have the onClick functionality,also it will set the color of the clicked button, to be unique*/}
+                    {showCorrectIncorrectValidation === "" ? (
                       <Button
                         variant="outline-danger"
                         onClick={() => handleCorrectAnswer(values, index)}
                         className="p-1"
                       >
                         {" "}
-                        {values}
+                        {decodeURIComponent(values)}
                       </Button>
                     ) : (
                       <Button
                         variant="outline-danger"
-                        className="p-1"
+                        className="p-1 afterButton"
                         style={{
-                          backgroundColor:
-                            index === selectedButton && "purple" ,
-                            color:
-                            index === selectedButton && "white",
-                            border:
-                            index === selectedButton && "1px solid black",
+                          backgroundColor: index === selectedOption && "black",
+                          color: index === selectedOption && "white",
+                          border: index === selectedOption && "1px solid black",
                         }}
                       >
-                        {values}
+                        {decodeURIComponent(values)}
                       </Button>
                     )}
                   </div>
@@ -165,45 +219,66 @@ function Quiz() {
               })}
             </div>
           </div>
-          {show === "Correct Answer" ? (
+          {/* diplaying if the user has selected right option of wrong option, if it's correct it will be shown in green color , and if it's wrong it will be shown in red color */}
+          {showCorrectIncorrectValidation === "Correct Answer" ? (
             <div
               className="ShowResult"
-              style={{ color: "black", fontSize: "36px" }}
+              style={{ color: "Green", fontSize: "36px" }}
             >
-              {show}
+              {showCorrectIncorrectValidation}
             </div>
           ) : (
             <div
               className="ShowResult"
-              style={{ color: "black", fontSize: "36px" }}
+              style={{ color: "red", fontSize: "36px" }}
             >
-              {show}
+              {showCorrectIncorrectValidation}
             </div>
           )}
-          {show.length > 0 && questionNumber < data.length && (
+          {/* displaying the next button after the user has clicked the option button , the button will only be shown to user if any of options is selected */}
+          {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber < data.length && (
             <Button variant="outline-dark" onClick={handleNextQuestionChange}>
               Next Question
             </Button>
           )}
-          {show.length > 0 && questionNumber === data.length && (
-            <button onClick={handleShowResult}>Restart Quiz</button>
+          {/* Displaying the result button after all the questions are attempted*/}
+          {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber === data.length && (
+            <button onClick={handleShowResult}>Show Result</button>
           )}
         </div>
-      </div>
-      {progress > 0 && (
-        <div className="progress-bar">
-          <div
-            className="progress-bar-fill"
-            style={{
-              width: `${percentage}%`,
-              height: "20px",
-              backgroundColor: "#909090",
-            }}
-          >
-            {percentage}%
-          </div>
+        {/* displaying the bottom progress bar , which is dynamic to the number of questions */}
+        <div className="scoresOnProgress">
+          <h6>Score: {quizScore.toFixed(2)}</h6>
+          <h6 className="max-score">Max Score {quizMaxScore.toFixed(2)}</h6>
         </div>
-      )}
+        {/* Multiprogress bar , which will increase if there is right answer and , will decrease if it's wrong answer */}
+        <MultiProgress
+          transitionTime={1.2}
+          elements={[
+            {
+              value: quizScore,
+              color: "black",
+              isBold: false,
+            },
+            {
+              value: quizScore + 12,
+              color: "grey",
+              isBold: true,
+            },
+            {
+              value: quizScore + 25,
+              color: "darkGrey",
+              isBold: true,
+            },
+            {
+              value: incorrectProgressBar + 65,
+              color: "lightgrey",
+            },
+          ]}
+          height={20}
+          className="progress-bar"
+        />
+      </div>
     </>
   );
 }

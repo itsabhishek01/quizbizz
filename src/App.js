@@ -8,8 +8,7 @@ function App() {
   return (
 <BrowserRouter>
     <Routes>
-      <Route path='/' element={<JoinQuiz/>}/>
-      <Route path='/Quiz' element={<Quiz/>}/>
+      <Route path='/' element={<Quiz/>}/>
     </Routes>
 </BrowserRouter>
   );
