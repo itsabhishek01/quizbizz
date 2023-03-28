@@ -69,36 +69,24 @@ function Quiz() {
 
   //States used in the Component
 
-  //This State will store Current Question Number
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
-  //This State will store Current Question Category
   const [currentQuestionCategory, setCurrentQuestionCategory] = useState(data[0].category);
-  //This State will store Current Question Difficulty
   const [currentQuestiondifficulty, setCurrentQuestionDifficulty] = useState(returnStarsForDifficulty(data[0].difficulty));
-  //This State Will store Current Question
   const [currentQuestion, setCurrentQuestion] = useState(data[0].question);
-  //This State will store Quiz Options 
   const [quizOptions, setQuizOptions] = useState(shuffleOptionsArray(initialOptions));
-  //This State will store Correct and Incorrect Validtion
   const [showCorrectIncorrectValidation, setshowCorrectIncorrectValidation] = useState("");
-  //This State will Store the Current Quiz Score 
   const [quizScore, setQuizScore] = useState(0);
-  //This State will store the Current Quiz Progress
   const [quizProgress, setQuizProgress] = useState(0);
-  //This State will store the index of the Option Selected by the user from the list of options for the question 
   const [selectedOption, setSelectedOption] = useState();
-  //This State will Store the Max Score for the Current Quiz 
   const [quizMaxScore, setQuizMaxScore] = useState(100);
-  // This State will Store the value of incorrect progress Bar , if there is a wrong answer
   const [incorrectProgressBar, setIncorrectProgressBar] = useState(data.length)
-  //This State will store all the data , that is required to show result to user , when navigate to Resullt page
   const [quizResult, setQuizResult] = useState({
     finalScore: "",
     finalPercentage: "",
     dataLength: "",
   });
 
-  //useeffect hook to set result on each show render
+  //useEffect hook to set result on each show render
   useEffect(() => {
     setQuizResult({
       finalScore: quizScore,
