@@ -8,12 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 function Quiz() {
   //UseEffect Hook to clear the result data from local storage on page load
-
-  //Today's Status:
-  // Title : Quiz App
-  // DONE:
-  // Optimizing the Code - 2 and half Hrs
-
   useEffect(() => {
     localStorage.removeItem("result");
   }, []);
