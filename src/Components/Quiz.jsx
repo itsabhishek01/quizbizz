@@ -1,7 +1,6 @@
 //Importing libraries
 import React, { useState, useEffect } from "react";
 import data from "./questions.json";
-import Button from "react-bootstrap/Button";
 import MultiProgress from "react-multi-progress";
 import "./Quiz.css";
 import { useNavigate } from "react-router-dom";
@@ -175,17 +174,15 @@ function Quiz() {
                     {/* if if showCorrectIncorrect === '' , it will display the buttons which will have the onClick functionality */}
                     {/* if if showCorrectIncorrect !== '' , it will display the buttons which will not have the onClick functionality,also it will set the color of the clicked button, to be unique*/}
                     {showCorrectIncorrectValidation === "" ? (
-                      <Button
-                        variant="outline-danger"
+                      <button
                         onClick={() => handleCorrectAnswer(values, index)}
                         className="p-1"
                       >
                         {" "}
                         {decodeURIComponent(values)}
-                      </Button>
+                      </button>
                     ) : (
-                      <Button
-                        variant="outline-danger"
+                      <button
                         className="p-1 afterButton"
                         style={{
                           backgroundColor: index === selectedOption && "black",
@@ -194,7 +191,7 @@ function Quiz() {
                         }}
                       >
                         {decodeURIComponent(values)}
-                      </Button>
+                      </button>
                     )}
                   </div>
                 );
@@ -219,9 +216,9 @@ function Quiz() {
           )}
           {/* displaying the next button after the user has clicked the option button , the button will only be shown to user if any of options is selected */}
           {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber < data.length && (
-            <Button variant="outline-dark" onClick={handleNextQuestionChange}>
+            <button onClick={handleNextQuestionChange}>
               Next Question
-            </Button>
+            </button>
           )}
           {/* Displaying the result button after all the questions are attempted*/}
           {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber === data.length && (
@@ -253,7 +250,7 @@ function Quiz() {
               isBold: true,
             },
             {
-              value: incorrectProgressBar + 65,
+              value: incorrectProgressBar + 50,
               color: "lightgrey",
             },
           ]}
