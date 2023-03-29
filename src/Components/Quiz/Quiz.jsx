@@ -7,7 +7,7 @@ import {
   inCorrectAnswer,
   localStorageKey,
   maxValueHundred,
-} from "../../constants/index";
+} from "../../Constants/index";
 import {
   HandleShowResult,
   shuffleOptionsArray,

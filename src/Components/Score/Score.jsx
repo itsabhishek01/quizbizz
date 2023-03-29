@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { localStorageKey } from '../../constants/index';
+import { localStorageKey } from '../../Constants/index';
 import './Score.css'
 
 export default function Score() {
