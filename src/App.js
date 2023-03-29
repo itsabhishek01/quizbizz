@@ -1,6 +1,6 @@
 import './App.css';
-import Quiz from './Components/Quiz'
-import Score from './Components/Score';
+import Quiz from './Components/Quiz/Quiz'
+import Score from './Components/Score/Score';
 import { BrowserRouter, Routes } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 

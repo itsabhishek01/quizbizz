@@ -1,44 +1,21 @@
 //Importing libraries
 import React, { useState, useEffect } from "react";
-import data from "./questions.json";
+import data from '../../Data/questions.json'
 import MultiProgress from "react-multi-progress";
 import "./Quiz.css";
 import { useNavigate } from "react-router-dom";
+import { correctAnswer,inCorrectAnswer,localStorageKey,maxValueofHundred } from "../../Constants/Index";
+import { HandleShowResult,shuffleOptionsArray,returnOptions,returnStarsForDifficulty } from "../../utils/Index";
+
 
 function Quiz() {
-  //UseEffect Hook to clear the result data from local storage on page load
+  //UseEffect Hook to clear the result data from local storage on page render
   useEffect(() => {
-    localStorage.removeItem("result");
+    localStorage.removeItem(localStorageKey);
   }, []);
 
   //Navigate hook , to navigate the user to the result page
   const navigate = useNavigate();
-
-  //Function to return options Array
-  function returnOptions(correctAnswer, incorrectAnswers) {
-    let finalOptions = [correctAnswer];
-    for (let values of incorrectAnswers) {
-      finalOptions.push(values);
-    }
-    return shuffleOptionsArray(finalOptions);
-  }
-
-  //function to shuffle array of answers
-  function shuffleOptionsArray(array) {
-    let currentIndex = array.length,
-      randomIndex;
-    while (currentIndex !== 0) {
-      //assigning a random value to the randomIndex
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      //Swapping the index of the current index and random index
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-    return array;
-  }
 
   //Setting initital data , of options that will will shown to user for the first question
   let initialOptions = [data[0].correct_answer];
@@ -46,22 +23,7 @@ function Quiz() {
     initialOptions.push(values);
   }
 
-  //Function to return Stars
-  const returnStarsForDifficulty = (difficulty) => {
-    if (difficulty === "easy") {
-      //if the difficulty is easy , it will return the following number of stars
-      return "★☆☆☆☆";
-    } else if (difficulty === "medium") {
-      //if the difficulty is medium , it will return the following number of stars
-      return "★★★☆☆";
-    } else {
-      //if the difficulty is other than easy and medium , it will return the following number of stars
-      return "★★★★★";
-    }
-  };
-
   //States used in the Component
-
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [currentQuestionCategory, setCurrentQuestionCategory] = useState(data[0].category);
   const [currentQuestiondifficulty, setCurrentQuestionDifficulty] = useState(returnStarsForDifficulty(data[0].difficulty));
@@ -71,8 +33,8 @@ function Quiz() {
   const [quizScore, setQuizScore] = useState(0);
   const [quizProgress, setQuizProgress] = useState(0);
   const [selectedOption, setSelectedOption] = useState();
-  const [quizMaxScore, setQuizMaxScore] = useState(100);
-  const [incorrectProgressBar, setIncorrectProgressBar] = useState(data.length)
+  const [quizMaxScore, setQuizMaxScore] = useState(maxValueofHundred);
+  const [incorrectProgressBar, setIncorrectProgressBar] = useState(maxValueofHundred)
   const [quizResult, setQuizResult] = useState({
     finalScore: "",
     finalPercentage: "",
@@ -97,10 +59,10 @@ function Quiz() {
       setCurrentQuestionDifficulty(returnStarsForDifficulty(data[currentQuestionNumber].difficulty));
       setCurrentQuestion(data[currentQuestionNumber].question);
       setQuizOptions(
-        returnOptions(
+        shuffleOptionsArray(returnOptions(
           data[currentQuestionNumber].correct_answer,
           data[currentQuestionNumber].incorrect_answers
-        )
+        ))
       );
       setshowCorrectIncorrectValidation("");
     } else {
@@ -112,28 +74,21 @@ function Quiz() {
   const handleCorrectAnswer = (value, index) => {
     setSelectedOption(index);
     if (value === data[currentQuestionNumber - 1].correct_answer) {
-      setshowCorrectIncorrectValidation("Correct Answer");
-      setQuizScore(quizScore + 100 / data.length);
+      setshowCorrectIncorrectValidation(correctAnswer);
+      setQuizScore(quizScore + maxValueofHundred / data.length);
       setQuizProgress(quizProgress + 1);
     } else {
-      setshowCorrectIncorrectValidation("Incorrect Answer !!!");
+      setshowCorrectIncorrectValidation(inCorrectAnswer);
       if (quizScore > 0) {
-        setQuizMaxScore(quizMaxScore - 100 / data.length);
+        setQuizMaxScore(quizMaxScore - maxValueofHundred / data.length);
         setIncorrectProgressBar(incorrectProgressBar - data.length)
       }
-      setQuizMaxScore(quizMaxScore - 100 / data.length);
+      setQuizMaxScore(quizMaxScore - maxValueofHundred / data.length);
       setIncorrectProgressBar(incorrectProgressBar - data.length)
     }
   };
 
-  //Show Result
-  const handleShowResult = () => {
-    localStorage.setItem("result", JSON.stringify(quizResult));
-    navigate("/Score");
-  };
-
   return (
-    // decodeURIComponent , Method is used to decrypt the URL encoding
     <>
       {/* Div to Display the entire Quiz Window */}
       <div className="Quiz-Window">
@@ -199,21 +154,10 @@ function Quiz() {
             </div>
           </div>
           {/* diplaying if the user has selected right option of wrong option, if it's correct it will be shown in green color , and if it's wrong it will be shown in red color */}
-          {showCorrectIncorrectValidation === "Correct Answer" ? (
-            <div
-              className="ShowResult"
-              style={{ color: "Green", fontSize: "36px" }}
-            >
-              {showCorrectIncorrectValidation}
-            </div>
-          ) : (
-            <div
-              className="ShowResult"
-              style={{ color: "red", fontSize: "36px" }}
-            >
-              {showCorrectIncorrectValidation}
-            </div>
-          )}
+
+          <div className="ShowResult">
+            {showCorrectIncorrectValidation}
+          </div>
           {/* displaying the next button after the user has clicked the option button , the button will only be shown to user if any of options is selected */}
           {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber < data.length && (
             <button onClick={handleNextQuestionChange}>
@@ -222,7 +166,10 @@ function Quiz() {
           )}
           {/* Displaying the result button after all the questions are attempted*/}
           {showCorrectIncorrectValidation.length > 0 && currentQuestionNumber === data.length && (
-            <button onClick={handleShowResult}>Show Result</button>
+            <button onClick={() => {
+              HandleShowResult(localStorageKey, quizResult)
+              navigate("/Score");
+            }}>Show Result</button>
           )}
         </div>
         {/* displaying the bottom progress bar , which is dynamic to the number of questions */}
@@ -250,7 +197,7 @@ function Quiz() {
               isBold: true,
             },
             {
-              value: incorrectProgressBar + 50,
+              value: incorrectProgressBar,
               color: "lightgrey",
             },
           ]}

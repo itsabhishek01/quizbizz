@@ -15,28 +15,8 @@
   padding-top: 0;
 }
 
-.Result-Window {
-  text-align: center;
-  margin-top: 20px;
-  width: 60%;
-  background-color: #f2f2f2;
-  margin-left: auto;
-  margin-right: auto;
-  height: 480px;
-  padding-bottom: 35px;
-  padding-top: 0;
-}
-.Result-Window .scores {
-  padding: 50px;
-}
-.Result-Window .scores h1 {
-  font-size: 30px;
-  color: red;
-}
-
 .progress-bar {
   text-align: center;
-  width: 60%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -73,21 +53,7 @@
   padding-left: 15px;
   padding-right: 15px;
 }
-.Result-Window button {
-  cursor: pointer;
-  width: 250px;
-  margin: 15px;
-  border: 1px solid black;
-  border-radius: 4px;
-  padding: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
 
-.Result-Window button:hover {
-  background-color: black;
-  color: white;
-}
 .Quiz-Window {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -109,4 +75,41 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 0;
+}
+
+/* Scores file*/
+
+.Result-Window {
+  text-align: center;
+  margin-top: 20px;
+  width: 60%;
+  background-color: #f2f2f2;
+  margin-left: auto;
+  margin-right: auto;
+  height: 480px;
+  padding-bottom: 35px;
+  padding-top: 0;
+}
+.Result-Window .scores {
+  padding: 50px;
+}
+.Result-Window .scores h1 {
+  font-size: 30px;
+  color: red;
+}
+
+.Result-Window button {
+  cursor: pointer;
+  width: 250px;
+  margin: 15px;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.Result-Window button:hover {
+  background-color: black;
+  color: white;
 }
