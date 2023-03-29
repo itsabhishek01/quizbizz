@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { localStorageKey } from '../../constants/index';
+import './Score.css'
 
 export default function Score() {
     //Use Navigate hook
@@ -8,8 +10,8 @@ export default function Score() {
 
     //useEffect hook to get the local storage data on page load , with dependencey of empty array
     useEffect(() => {
-        if (localStorage.getItem("result") !== null) {
-            let data = localStorage.getItem("result");
+        if (localStorage.getItem(localStorageKey) !== null) {
+            let data = localStorage.getItem(localStorageKey);
             data = JSON.parse(data);
             setResultData({
                 finalScore: data.finalScore,
@@ -17,7 +19,7 @@ export default function Score() {
             })
         }
         else {
-            setExist('no')
+            setExistDataInLocalStorage(false)
         }
     }, [])
 
@@ -26,11 +28,11 @@ export default function Score() {
         finalScore: '',
         dataLength: ''
     })
-    const [exist, setExist] = useState('')
+    const [existDataInLocalStorage, setExistDataInLocalStorage] = useState(true)
 
     //Function to restart the quiz
     const restartQuiz = () => {
-        localStorage.removeItem("result")
+        localStorage.removeItem(localStorageKey)
         navigate('/')
     }
     return (
@@ -43,8 +45,8 @@ export default function Score() {
                 {resultData.finalScore >= 0 && <h4>Questions Answered Correctly: <b>{resultData.finalScore / (100 / resultData.dataLength)}</b></h4>}
                 {resultData.finalScore >= 0 && <h4>Questions Answered Incorrectly: <b>{resultData.dataLength - resultData.finalScore / (100 / resultData.dataLength)}</b></h4>}
                 {resultData.finalScore >= 0 && <button onClick={restartQuiz}>Restart Quiz</button>}
-                {exist === "no" && <h1>Please Play the Quiz to get the Scores</h1>}
-                {exist === "no" && <button onClick={restartQuiz}>Play Quiz</button>}
+                {existDataInLocalStorage === false && <h1>Please Play the Quiz to get the Scores</h1>}
+                {existDataInLocalStorage === false && <button onClick={restartQuiz}>Play Quiz</button>}
             </div>
         </div>
     )

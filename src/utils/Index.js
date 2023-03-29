@@ -25,8 +25,8 @@ export const returnOptions = (correctAnswer, incorrectAnswers) => {
 }
 
 //Show Result
-export const HandleShowResult = (key, data) => {
-  localStorage.setItem(key, JSON.stringify(data));
+export const HandleShowResult = (localStorageKey, data) => {
+  localStorage.setItem(localStorageKey, JSON.stringify(data));
 };
 
 //Function to return Stars
