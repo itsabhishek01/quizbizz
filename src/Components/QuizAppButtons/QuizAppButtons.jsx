@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import data from '../../data/questions.json'
 import { setLocalStorageItem } from '../../utils';
-import { localStorageKey } from '../../constants';
+import { localStorageKey } from '../../Constants';
 
 export default function QuizAppButtons({
     showCorrectIncorrectValidation,

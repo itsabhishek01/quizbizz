@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import data from "../../data/questions.json";
 import "./Quiz.css";
-import { correctAnswer, inCorrectAnswer, localStorageKey, } from "../../constants";
+import { correctAnswer, inCorrectAnswer, localStorageKey, } from "../../Constants";
 import { returnShuffledOptions, returnStarsForDifficulty, } from "../../utils";
 import { QuizAppFooter, QuizAppHeader, QuizQuestions, QuizAppButtons } from "../../Components";
 

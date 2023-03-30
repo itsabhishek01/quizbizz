@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { localStorageKey } from '../../constants/index';
+import { localStorageKey } from '../../Constants/index';
 import './Score.css'
 import { Scores } from '../../Components';
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { removeLocalStorageItem } from '../../utils'
-import { localStorageKey } from '../../constants'
+import { localStorageKey } from '../../Constants'
 import { useNavigate } from 'react-router-dom'
 
 export default function Scores({
