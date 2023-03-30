@@ -13,7 +13,7 @@ export const shuffleOptionsArray = (array) => {
     ];
   }
   return array;
-}
+};
 
 //Function to Return the Array of the Options
 export const returnOptions = (correctAnswer, incorrectAnswers) => {
@@ -21,12 +21,7 @@ export const returnOptions = (correctAnswer, incorrectAnswers) => {
   for (let values of incorrectAnswers) {
     finalOptions.push(values);
   }
-  return (finalOptions);
-}
-
-//Show Result
-export const HandleShowResult = (localStorageKey, data) => {
-  localStorage.setItem(localStorageKey, JSON.stringify(data));
+  return finalOptions;
 };
 
 //Function to return Stars
@@ -38,4 +33,18 @@ export const returnStarsForDifficulty = (difficulty) => {
   } else {
     return "★★★★★";
   }
+};
+
+export const returnShuffledOptions = (correctAnswer, incorrectAnswers) => {
+  return shuffleOptionsArray(returnOptions(correctAnswer, incorrectAnswers));
+};
+
+//Show Result
+export const HandleShowResult = (localStorageKey, data) => {
+  localStorage.setItem(localStorageKey, JSON.stringify(data));
+};
+
+//Function to restart the quiz
+export const restartQuiz = (localStorageKey) => {
+  localStorage.removeItem(localStorageKey);
 };
