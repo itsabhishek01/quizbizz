@@ -14,7 +14,7 @@ export default function Quiz() {
   //States used in the Component
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [currentQuestionCategory, setCurrentQuestionCategory] = useState(data[0].category);
-  const [currentQuestiondifficulty, setCurrentQuestionDifficulty] = useState(returnStarsForDifficulty(data[0].difficulty));
+  const [currentQuestionDifficulty, setCurrentQuestionDifficulty] = useState(returnStarsForDifficulty(data[0].difficulty));
   const [currentQuestion, setCurrentQuestion] = useState(data[0].question);
   const [quizOptions, setQuizOptions] = useState(returnShuffledOptions(data[0].correct_answer, data[0].incorrect_answers));
   const [showCorrectIncorrectValidation, setshowCorrectIncorrectValidation] = useState("");
@@ -84,7 +84,7 @@ export default function Quiz() {
         <QuizAppHeader
           currentQuestionNumber={currentQuestionNumber}
           currentQuestionCategory={currentQuestionCategory}
-          currentQuestiondifficulty={currentQuestiondifficulty}
+          currentQuestionDifficulty={currentQuestionDifficulty}
         />
 
         {/* Component to display the Current Question*/}

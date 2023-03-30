@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import data from '../../data/questions.json'
-import { HandleShowResult } from '../../utils';
+import { setLocalStorageItem } from '../../utils';
 import { localStorageKey } from '../../constants';
 
 export default function QuizAppButtons({
@@ -22,7 +22,7 @@ export default function QuizAppButtons({
                 currentQuestionNumber === data.length && (
                     <button
                         onClick={() => {
-                            HandleShowResult(localStorageKey, quizResult);
+                            setLocalStorageItem(localStorageKey, quizResult);
                             navigate("/Score");
                         }}
                     >

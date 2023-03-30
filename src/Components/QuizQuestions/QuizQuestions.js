@@ -22,8 +22,6 @@ export default function QuizQuestions ({
               style={{ display: "inline-block" }}
               className=" pt-3"
             >
-              {/* if if showCorrectIncorrect === '' , it will display the buttons which will have the onClick functionality */}
-              {/* if if showCorrectIncorrect !== '' , it will display the buttons which will not have the onClick functionality,also it will set the color of the clicked button, to be unique*/}
               {showCorrectIncorrectValidation === "" ? (
                 <button
                   onClick={() => handleCorrectAnswer(values, index)}

@@ -14,10 +14,9 @@ export default function Score() {
                 finalScore: data.finalScore,
                 dataLength: data.dataLength
             })
+            return;
         }
-        else {
             setExistDataInLocalStorage(false)
-        }
     }, [])
 
     //State to save the result data

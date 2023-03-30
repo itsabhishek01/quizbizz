@@ -1,7 +1,7 @@
 import React from 'react'
 import data from '../../data/questions.json'
 
-export default function QuizAppHeader({ currentQuestionNumber, currentQuestionCategory, currentQuestiondifficulty }) {
+export default function QuizAppHeader({ currentQuestionNumber, currentQuestionCategory, currentQuestionDifficulty }) {
     return (
         <div className="QuestionHeader">
             {/* Current Question Number */}
@@ -14,7 +14,7 @@ export default function QuizAppHeader({ currentQuestionNumber, currentQuestionCa
             </p>
             {/* Current question Difficulty */}
             <p style={{ fontSize: "14px", color: "grey", marginBottom: "0" }}>
-                Difficulty: {currentQuestiondifficulty}
+                Difficulty: {currentQuestionDifficulty}
             </p>
         </div>
     )

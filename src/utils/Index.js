@@ -28,11 +28,11 @@ export const returnOptions = (correctAnswer, incorrectAnswers) => {
 export const returnStarsForDifficulty = (difficulty) => {
   if (difficulty === "easy") {
     return "★☆☆☆☆";
-  } else if (difficulty === "medium") {
-    return "★★★☆☆";
-  } else {
-    return "★★★★★";
   }
+  if (difficulty === "medium") {
+    return "★★★☆☆";
+  }
+  return "★★★★★";
 };
 
 export const returnShuffledOptions = (correctAnswer, incorrectAnswers) => {
@@ -40,11 +40,11 @@ export const returnShuffledOptions = (correctAnswer, incorrectAnswers) => {
 };
 
 //Show Result
-export const HandleShowResult = (localStorageKey, data) => {
+export const setLocalStorageItem = (localStorageKey, data) => {
   localStorage.setItem(localStorageKey, JSON.stringify(data));
 };
 
 //Function to restart the quiz
-export const restartQuiz = (localStorageKey) => {
+export const removeLocalStorageItem = (localStorageKey) => {
   localStorage.removeItem(localStorageKey);
 };
