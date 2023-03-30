@@ -4,8 +4,10 @@ import "./Quiz.css";
 import { correctAnswer, inCorrectAnswer, localStorageKey, } from "../../Constants";
 import { returnShuffledOptions, returnStarsForDifficulty, } from "../../utils";
 import { QuizAppFooter, QuizAppHeader, QuizQuestions, QuizAppButtons } from "../../Components";
+import { shuffleOptionsArray } from "../../utils";
 
 export default function Quiz() {
+  shuffleOptionsArray(data)
   //UseEffect Hook to clear the result data from local storage on page render
   useEffect(() => {
     localStorage.removeItem(localStorageKey);
